@@ -1,0 +1,23 @@
+# Escenario de huecos: aleatorios
+gaps:
+  name: "random"
+  type: "random"
+
+  # Configuración de huecos aleatorios
+  config:
+    missing_rates: [0.05, 0.10, 0.20, 0.30, 0.40, 0.50]  # % de datos faltantes
+    n_trials: 10  # Repeticiones por cada tasa
+
+    # Distribución de huecos
+    gap_distribution: "uniform"  # ["uniform", "clustered"]
+
+    # Estratificación temporal
+    stratify_by_season: false
+    stratify_by_year: false
+
+  # Semilla
+  random_seed: 42
+
+  # Guardado de máscaras
+  save_masks: true
+  output_dir: "data/processed/gaps/random"

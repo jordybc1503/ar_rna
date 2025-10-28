@@ -1,0 +1,43 @@
+# Modelo: MLP (Multi-Layer Perceptron)
+model:
+  name: "mlp"
+  type: "neural_network"
+
+  # Hiperparámetros del MLP
+  params:
+    hidden_layer_sizes: [128, 64, 32]
+    activation: "relu"
+    solver: "adam"
+    alpha: 0.0001  # L2 regularization
+    batch_size: 256
+    learning_rate_init: 0.001
+    learning_rate: "adaptive"
+    max_iter: 300
+    early_stopping: true
+    validation_fraction: 0.15
+    n_iter_no_change: 20
+    random_state: 42
+    verbose: false
+
+  # Feature engineering
+  features:
+    lags: [1, 2, 3, 7, 14, 30]
+    rolling_windows: [7, 14, 30]
+    rolling_stats: ["mean", "max", "std"]
+    use_neighbor_stations: true
+    n_neighbors: 5
+    neighbor_method: "correlation"
+
+    # Features auxiliares
+    use_elevation: true
+    use_coordinates: true  # lat/lon
+    use_temporal: true  # día del año, mes
+
+  # Normalización (crítica para MLP)
+  normalization:
+    method: "zscore"  # ["zscore", "robust", "minmax"]
+    fit_on_train: true
+
+  # Guardado
+  save_path: "experiments/models/mlp"
+  save_scaler: true

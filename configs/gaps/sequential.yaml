@@ -1,0 +1,33 @@
+# Escenario de huecos: secuenciales (rachas consecutivas)
+gaps:
+  name: "sequential"
+  type: "sequential"
+
+  # Configuración de huecos secuenciales
+  config:
+    max_lengths: [3, 7, 14, 30, 60, 90]  # Longitudes máximas de rachas
+    n_gaps_per_length: 20  # Número de rachas por longitud
+
+    # Distribución temporal de huecos
+    placement: "random"  # ["random", "systematic"]
+
+    # Asegurar separación entre rachas
+    min_separation: 7  # días entre rachas consecutivas
+
+    # Opcional: forzar huecos en períodos específicos
+    force_periods:
+      enabled: false
+      wet_season_only: false
+      dry_season_only: false
+
+  # Longitud real de rachas (puede ser variable)
+  allow_variable_length:
+    enabled: true
+    distribution: "uniform"  # ["uniform", "exponential"]
+
+  # Semilla
+  random_seed: 42
+
+  # Guardado de máscaras
+  save_masks: true
+  output_dir: "data/processed/gaps/sequential"

@@ -1,0 +1,28 @@
+# Configuración de datos
+data:
+  raw_dir: data/raw
+  interim_dir: data/interim
+  processed_dir: data/processed
+
+  # Rango temporal
+  start_date: "2000-01-01"
+  end_date: "2023-12-31"
+
+  # Bounding box para cuenca del Mantaro [lon_min, lat_min, lon_max, lat_max]
+  bbox: [-75.8, -13.7, -73.6, -10.8]
+
+  # Control de calidad
+  qc:
+    min_valid_ratio: 0.7  # % mínimo de datos válidos por estación
+    max_outlier_threshold: 5  # z-score para detectar outliers
+    remove_duplicates: true
+
+  # Normalización
+  normalization:
+    method: "robust"  # ["zscore", "robust", "minmax"]
+    scale_by_station: true
+
+  # Proveedores
+  providers:
+    - SENAMHI
+    - ANA

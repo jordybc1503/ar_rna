@@ -1,0 +1,29 @@
+# Cross-Validation espacial: Leave-One-Station-Out
+cv:
+  name: "loso"
+  type: "spatial"
+
+  strategy:
+    method: "leave_one_station_out"
+
+    # Opciones
+    min_train_stations: 3  # Mínimo de estaciones para entrenar
+    require_temporal_overlap: true  # Train y test deben tener overlap temporal
+    min_overlap_days: 365
+
+  # Evaluación espacial
+  spatial_metrics:
+    - "r"
+    - "mae"
+    - "rmse"
+    - "bias"
+
+  # Agregación
+  aggregation: "mean"
+  report_per_station: true  # Guardar resultados por estación
+
+  # Opcional: ponderar por distancia
+  distance_weighting:
+    enabled: false
+    method: "inverse_distance"
+    power: 2

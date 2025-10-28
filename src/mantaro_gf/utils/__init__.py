@@ -1,0 +1,1 @@
+"""Init para módulo utils."""

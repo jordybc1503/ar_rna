@@ -1,0 +1,67 @@
+# Modelo Híbrido: AR → MLP
+# Paso 1: AR selecciona top-k features más influyentes
+# Paso 2: MLP entrena solo con esas features seleccionadas
+
+model:
+  name: "hybrid_ar_mlp"
+  type: "hybrid"
+
+  # Configuración del componente AR (selector)
+  ar_selector:
+    max_depth: 6
+    min_samples_split: 20
+    min_samples_leaf: 10
+    criterion: "squared_error"
+    random_state: 42
+
+    # Selección de features
+    selection_method: "importance"  # ["importance", "shap", "split_count"]
+    top_k_features: 15  # Cuántas features pasar al MLP
+    min_importance: 0.01  # Umbral mínimo de importancia
+
+  # Configuración del componente MLP (predictor)
+  mlp_predictor:
+    hidden_layer_sizes: [64, 32]
+    activation: "relu"
+    solver: "adam"
+    alpha: 0.0005
+    batch_size: 128
+    learning_rate_init: 0.001
+    max_iter: 300
+    early_stopping: true
+    validation_fraction: 0.15
+    random_state: 42
+
+  # Feature engineering (pool inicial completo)
+  features:
+    lags: [1, 2, 3, 7, 14, 30]
+    rolling_windows: [7, 14, 30]
+    rolling_stats: ["mean", "max", "std", "p95"]
+    use_neighbor_stations: true
+    n_neighbors: 8  # Pool más grande para selección
+    neighbor_method: "distance"
+    use_elevation: true
+    use_coordinates: true
+    use_temporal: true
+
+  # Workflow del híbrido
+  workflow:
+    # 1. Entrenar AR en datos completos
+    fit_ar_first: true
+    # 2. Extraer top-k features
+    extract_features: true
+    # 3. Entrenar MLP solo con features seleccionadas
+    fit_mlp_reduced: true
+    # 4. Predicción final usa MLP
+    predict_with: "mlp"
+
+  # Normalización
+  normalization:
+    method: "robust"
+    fit_on_train: true
+
+  # Guardado
+  save_path: "experiments/models/hybrid_ar_mlp"
+  save_ar_selector: true
+  save_mlp_predictor: true
+  save_selected_features: true

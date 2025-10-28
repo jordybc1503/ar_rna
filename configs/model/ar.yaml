@@ -1,0 +1,32 @@
+# Modelo: Árbol de Regresión (Decision Tree)
+model:
+  name: "ar"
+  type: "regression_tree"
+
+  # Hiperparámetros del árbol
+  params:
+    max_depth: 8
+    min_samples_split: 20
+    min_samples_leaf: 10
+    criterion: "squared_error"
+    splitter: "best"
+    random_state: 42
+
+  # Feature engineering
+  features:
+    lags: [1, 2, 3, 7, 14, 30]  # Lags temporales
+    rolling_windows: [7, 14, 30]  # Agregados móviles
+    rolling_stats: ["mean", "max", "std"]  # Estadísticas rolling
+    use_neighbor_stations: true
+    n_neighbors: 5
+    neighbor_method: "distance"  # ["distance", "correlation"]
+
+  # Para selección de features (modo híbrido)
+  feature_selection:
+    enabled: true
+    method: "importance"  # ["importance", "shap"]
+    top_k: 10  # Top-k features más importantes
+
+  # Guardado
+  save_path: "experiments/models/ar"
+  save_feature_importance: true

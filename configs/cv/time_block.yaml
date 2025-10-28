@@ -1,0 +1,32 @@
+# Cross-Validation temporal por bloques
+cv:
+  name: "time_block"
+  type: "temporal"
+
+  strategy:
+    method: "time_series_split"
+    n_splits: 5
+
+    # Configuración de bloques temporales
+    test_size: 365  # días (1 año)
+    gap: 0  # días de buffer entre train y test
+
+    # Evitar fuga de datos futuros
+    shuffle: false
+
+    # Opcional: validación por estación húmeda/seca
+    seasonal_blocks:
+      enabled: false
+      wet_season: [11, 12, 1, 2, 3]  # Nov-Mar
+      dry_season: [4, 5, 6, 7, 8, 9, 10]  # Abr-Oct
+
+  # Métricas a calcular en cada fold
+  metrics:
+    - "r"
+    - "mae"
+    - "rmse"
+    - "bias"
+
+  # Agregación de resultados
+  aggregation: "mean"  # ["mean", "median"]
+  report_std: true
